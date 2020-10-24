@@ -1,5 +1,5 @@
 // variables
-const carrito = document.querySelector("#carrito");
+const carrito = document.querySelector('#carrito');
 const contenidoCarrito = document.querySelector("#lista-carrito tbody");
 const vaciarCarritoBtn = document.querySelector("#vaciar-carrito");
 const listaCursos = document.querySelector("#lista-cursos");
@@ -7,10 +7,19 @@ let articulosCarrito = [];
 
 cargarEventListeners();
 function cargarEventListeners() {
-    // cuando agregas un curso presionando "ägregar al carrito"
+    // cuando agregas un curso presionando "agregar al carrito"
     listaCursos.addEventListener("click", agregarCurso);
 
-    // elimina cursos del carrito
+    // Elimina cursos del carrito
+    carrito.addEventListener('click', eliminarCurso);
+   
+    // vaciar carrito
+    vaciarCarritoBtn.addEventListener("click", () => {
+        articulosCarrito = []; // reseteamos el arreglo
+
+        limpiarHTML();
+    })
+
 }
 
 //Funciones
@@ -22,6 +31,18 @@ function agregarCurso(e){
         leerDatosCurso(cursoSeleccionado);
     }
 }
+
+function eliminarCurso(e) {
+    if(e.target.classList.contains('borrar-curso')) {
+        const cursoId = e.target.getAttribute('data-id');
+
+        // Elimina del arreglo de articulosCarrito por el data-id
+        articulosCarrito = articulosCarrito.filter( curso => curso.id !== cursoId );
+
+        carritoHTML(); // Iterar sobre el carrito y mostrar su HTML
+    }
+}
+
 
 function leerDatosCurso(curso){
 
@@ -74,7 +95,7 @@ function carritoHTML() {
             <td>${precio}</td>
             <td>${cantidad}</td>
             <td>
-                <a href="#" class="borrar-curso" data-id"${id}"> x </a>
+                <a href="#" class="borrar-curso" data-id = "${id}"> x </a>
             </td>
         `
         // agregando el contenido del carrito en el tbody
